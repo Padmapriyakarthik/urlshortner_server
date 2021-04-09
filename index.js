@@ -209,8 +209,8 @@ app.get('/activate-password/:token',async(req,res)=>{
                         if(document)
                         {
                             //res.status(200).json({message:"password reset link Activated Sucessfully"});
-                           res.redirect(baseurl+"/Password");
-                        
+                           //res.redirect(baseurl+"/Password");
+                            res.redirect(`${baseurl}/Password`)
                         }          
                     }else{
                         res.status(401).json({message:"invalid token"});
