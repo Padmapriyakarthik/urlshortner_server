@@ -1,5 +1,5 @@
 
-const baseurl="http://localhost:3000";
+const baseurl="https://mini-url.netlify.app";
 const express=require('express');
 const app=express();
 app.use(express.json());
@@ -28,8 +28,8 @@ const transporter=nodemailer.createTransport({
     }
 });
 
-const dbUrl=/*process.env.DB_URL || */"mongodb://127.0.0.1:27017";
-const port=/*process.env.PORT || */4000;
+const dbUrl=process.env.DB_URL || "mongodb://127.0.0.1:27017";
+const port=process.env.PORT || 4000;
 
 // register user
 app.post("/register", async (req,res)=>{
@@ -57,7 +57,7 @@ app.post("/register", async (req,res)=>{
                             from: 'padmapriyakarthik97@gmail.com', // sender address
                             to: req.body.email, // list of receivers
                             subject: "Hai!", // Subject line
-                            html: 'Click <a href="http://localhost:4000/activate-user/' + token + '">here</a> to confirm your registration'
+                            html: 'Click <a href="https://shorturls-server.herokuapp.com/activate-user/' + token + '">here</a> to confirm your registration'
                           })
                         res.status(200).json({
                             "message":"activate your account via activation link sent to your mail"
@@ -172,7 +172,7 @@ app.post('/forgetpassword',async(req,res)=>{
                             from: 'padmapriyakarthik97@gmail.com', // sender address
                             to: req.body.email, // list of receivers
                             subject: "Hai!", // Subject line
-                            html: 'Click <a href="http://localhost:4000/activate-password/' + dummytoken + '">here</a> to reset your password'
+                            html: 'Click <a href="https://shorturls-server.herokuapp.com/activate-password/' + dummytoken + '">here</a> to reset your password'
                           })
                         if(dummytoken)
                         {
