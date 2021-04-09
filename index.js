@@ -57,7 +57,7 @@ app.post("/register", async (req,res)=>{
                             from: 'padmapriyakarthik97@gmail.com', // sender address
                             to: req.body.email, // list of receivers
                             subject: "Hai!", // Subject line
-                            html: 'Click <a href="https://shorturls-server.herokuapp.com/activate-user/' + token + '">here</a> to confirm your registration'
+                            html: 'Click <a href="https://urlshortner-server.herokuapp.com/activate-user/' + token + '">here</a> to confirm your registration'
                           })
                         res.status(200).json({
                             "message":"activate your account via activation link sent to your mail"
@@ -172,7 +172,7 @@ app.post('/forgetpassword',async(req,res)=>{
                             from: 'padmapriyakarthik97@gmail.com', // sender address
                             to: req.body.email, // list of receivers
                             subject: "Hai!", // Subject line
-                            html: 'Click <a href="https://shorturls-server.herokuapp.com/activate-password/' + dummytoken + '">here</a> to reset your password'
+                            html: 'Click <a href="https://urlshortner-server.herokuapp.com/activate-password/' + dummytoken + '">here</a> to reset your password'
                           })
                         if(dummytoken)
                         {
