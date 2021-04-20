@@ -1,4 +1,3 @@
-
 const baseurl="https://urlshortner-client.herokuapp.com";
 const express=require('express');
 const app=express();
@@ -282,7 +281,8 @@ app.post("/url",authenticate,async (req,res)=>{
     if(client){
         try {
             const {shorturl}=req.body;
-           req.body.clicked=0;
+            req.body.clicked=0;
+            req.body.CreatedTime=Date.now();
             const db = client.db("url_shortner");
             const data= await db.collection("url").findOne({shorturl:req.body.shorturl});
 
@@ -358,8 +358,9 @@ app.get("/all-url",async(req,res)=>{
     const client = await mongoClient.connect(dbUrl);
     if(client){
         try {
+            const {email}=req.body.email;
             const db = client.db("url_shortner");
-            const document = await db.collection("url").find().project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
+            const document = await db.collection("url").find({email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
             if(document){
                res.status(200).json({
                     "message":document
@@ -375,6 +376,33 @@ app.get("/all-url",async(req,res)=>{
         res.sendStatus(500);
     }
 })
+
+app.get("/view-url",async(req,res)=>{
+
+    const client = await mongoClient.connect(dbUrl);
+    if(client){
+        try {
+            const {email}=req.body.email;
+            const db = client.db("url_shortner");
+            const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:1}).toArray();
+            if(document){
+              
+               res.status(200).json({
+                    "message":document
+                })
+            }
+            client.close();
+        } catch (error) {
+            console.log(error);
+            client.close();
+        }
+    }
+    else{
+        res.sendStatus(500);
+    }
+
+})
+
 
 app.listen(port,()=>{console.log("App Started")});
 
