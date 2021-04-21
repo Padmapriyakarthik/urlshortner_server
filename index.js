@@ -28,7 +28,7 @@ const transporter=nodemailer.createTransport({
 });
 
 const dbUrl=process.env.DB_URL || "mongodb://127.0.0.1:27017";
-const port=process.env.PORT || 4000;
+const port=/*process.env.PORT ||*/ 4000;
 
 // register user
 app.post("/register", async (req,res)=>{
@@ -360,7 +360,7 @@ app.get("/all-url",async(req,res)=>{
         try {
             const {email}=req.body.email;
             const db = client.db("url_shortner");
-            const document = await db.collection("url").find({email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
+            const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
             if(document){
                res.status(200).json({
                     "message":document
