@@ -1,4 +1,4 @@
-const baseurl="https://urlshortner-client.herokuapp.com";
+const baseurl="https://urlshortner-clients.herokuapp.com";
 const express=require('express');
 const app=express();
 app.use(express.json());
@@ -28,7 +28,7 @@ const transporter=nodemailer.createTransport({
 });
 
 const dbUrl=process.env.DB_URL || "mongodb://127.0.0.1:27017";
-const port=process.env.PORT || 4000;
+const port=/*process.env.PORT || */4000;
 
 // register user
 app.post("/register", async (req,res)=>{
@@ -384,7 +384,18 @@ app.get("/view-url",async(req,res)=>{
         try {
             const {email}=req.body.email;
             const db = client.db("url_shortner");
-            const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:1}).toArray();
+            var currentTime=new Date();
+            var month=currentTime.getMonth();
+            var year=currentTime.getFullYear();
+            console.log(month,year);
+            var starting="april 1 "+year+" 00:00:00";
+            var ending="april 30 "+year+" 23:59:59";
+    
+            var start=new Date(starting).getTime();
+            var end=new Date(ending).getTime();
+            console.log(start,   end);
+           // const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:1}).toArray();
+            const document=await db.collection("url").aggregate([{$match:{CreatedTime:{$gt:start,$lt:end}}},{$group:{_id:{$dateToString: { format: "%d-%m-%Y", date: "$_id" }},count:{$sum:1}}},{$sort:{_id:1}},{$limit:15}]).toArray();
             if(document){
               
                res.status(200).json({
