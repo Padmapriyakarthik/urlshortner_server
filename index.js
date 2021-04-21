@@ -359,9 +359,9 @@ app.get("/all-url",async(req,res)=>{
     if(client){
         try {
            // const {email}=req.body.email;
-           console.log(req.body)
+           console.log(req.params)
             const db = client.db("url_shortner");
-            const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
+            const document = await db.collection("url").find({email:req.params.email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
             if(document){
                res.status(200).json({
                     "message":document
