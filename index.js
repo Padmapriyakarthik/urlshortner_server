@@ -359,7 +359,7 @@ app.get("/all-url/:email",async(req,res)=>{
     if(client){
         try {
            // const {email}=req.body.email;
-           console.log(req.params.email);
+           console.log(req.params);
             const db = client.db("url_shortner");
             const document = await db.collection("url").find({email:req.params.email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
             if(document){
