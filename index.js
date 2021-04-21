@@ -1,4 +1,4 @@
-const baseurl="https://urlshortner-clients.herokuapp.com";
+const baseurl="https://urlshortner-client.herokuapp.com";
 const express=require('express');
 const app=express();
 app.use(express.json());
