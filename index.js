@@ -354,7 +354,7 @@ app.get("/short-url/:url",async(req,res)=>{
 })
 
 
-app.get("/all-url",async(req,res)=>{
+app.get("/all-url/:email",async(req,res)=>{
     const client = await mongoClient.connect(dbUrl);
     if(client){
         try {
