@@ -28,7 +28,7 @@ const transporter=nodemailer.createTransport({
 });
 
 const dbUrl=process.env.DB_URL || "mongodb://127.0.0.1:27017";
-const port=/*process.env.PORT || */4000;
+const port=process.env.PORT || 4000;
 
 // register user
 app.post("/register", async (req,res)=>{
