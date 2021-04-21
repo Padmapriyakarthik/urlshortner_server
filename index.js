@@ -354,12 +354,12 @@ app.get("/short-url/:url",async(req,res)=>{
 })
 
 
-app.get("/all-url",async(req,res)=>{
+app.get("/all-url/:email",async(req,res)=>{
     const client = await mongoClient.connect(dbUrl);
     if(client){
         try {
            // const {email}=req.body.email;
-           console.log(req.param);
+           console.log(req.params);
             const db = client.db("url_shortner");
             const document = await db.collection("url").find({email:req.params.email}).project({shorturl:1,clicked:1,originalurl:1,_id:0}).toArray();
             if(document){
