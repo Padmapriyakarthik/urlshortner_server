@@ -383,7 +383,7 @@ app.get("/view-url",async(req,res)=>{
     const client = await mongoClient.connect(dbUrl);
     if(client){
         try {
-            const {email}=req.body.email;
+            //const {email}=req.body.email;
             const db = client.db("url_shortner");
             var currentTime=new Date();
             var month=currentTime.getMonth();
