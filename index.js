@@ -396,7 +396,7 @@ app.get("/view-url",async(req,res)=>{
             var end=new Date(ending).getTime();
             console.log(start,   end);
            // const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:1}).toArray();
-            const document=await db.collection("url").aggregate([{$match:{CreatedTime:{$gt:start,$lt:end}}},{$group:{_id:{$dateToString: { format: "%d-%m-%Y", date: "$_id" }},count:{$sum:1}}},{$sort:{_id:1}},{$limit:15}]).toArray();
+            const document=await db.collection("url").aggregate([{$match:{CreatedTime:{$gt:start,$lt:end},email:req.query.email}},{$group:{_id:{$dateToString: { format: "%d-%m-%Y", date: "$_id" }},count:{$sum:1}}},{$sort:{_id:1}},{$limit:15}]).toArray();
             if(document){
               
                res.status(200).json({
