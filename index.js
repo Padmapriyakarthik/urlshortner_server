@@ -397,10 +397,18 @@ app.get("/view-url",async(req,res)=>{
             console.log(start,   end);
            // const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:1}).toArray();
             const document=await db.collection("url").aggregate([{$match:{CreatedTime:{$gt:start,$lt:end},email:req.query.email}},{$group:{_id:{$dateToString: { format: "%d-%m-%Y", date: "$_id" }},count:{$sum:1}}},{$sort:{_id:1}},{$limit:15}]).toArray();
+            console.log(document);
+            let array=[["Date","count"]]
+            document.forEach((elem)=>{
+                let arr=[];
+                arr.push(elem._id,elem.count);
+                array.push(arr);
+            })
+            console.log(array);
             if(document){
               
                res.status(200).json({
-                    "message":document
+                    "message":array
                 })
             }
             client.close();
