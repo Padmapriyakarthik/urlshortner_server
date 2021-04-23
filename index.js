@@ -383,29 +383,29 @@ app.get("/view-url",async(req,res)=>{
     const client = await mongoClient.connect(dbUrl);
     if(client){
         try {
-            //const {email}=req.body.email;
+         
             const db = client.db("url_shortner");
             var currentTime=new Date();
             var month=currentTime.getMonth();
+           
             var year=currentTime.getFullYear();
-            console.log(month,year);
-            var starting="april 1 "+year+" 00:00:00";
-            var ending="april 30 "+year+" 23:59:59";
+            var months=["jan","feb","mar","april","may","june","july","aug","september","october","november","december"];
+            
+            var starting=months[month]+" 1 "+year+" 00:00:00";
+            var ending=months[month]+" 30 "+year+" 23:59:59";
     
             var start=new Date(starting).getTime();
             var end=new Date(ending).getTime();
-            console.log(start,   end);
-           // const document = await db.collection("url").find({email:req.body.email}).project({shorturl:1,clicked:1,originalurl:1,_id:1}).toArray();
+      
             const document=await db.collection("url").aggregate([{$match:{CreatedTime:{$gt:start,$lt:end},email:req.query.email}},{$group:{_id:{$dateToString: { format: "%d-%m-%Y", date: "$_id" }},count:{$sum:1}}},{$sort:{_id:1}},{$limit:15}]).toArray();
-            console.log(document);
-            let array=[["Date","count"]]
-            document.forEach((elem)=>{
-                let arr=[];
-                arr.push(elem._id,elem.count);
-                array.push(arr);
-            })
+            
             if(document){
-              
+                let array=[["Date","count"]]
+                document.forEach((elem)=>{
+                    let arr=[];
+                    arr.push(elem._id,elem.count);
+                    array.push(arr);
+                })
                res.status(200).json({
                     "message":array
                 })
