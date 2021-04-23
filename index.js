@@ -404,7 +404,6 @@ app.get("/view-url",async(req,res)=>{
                 arr.push(elem._id,elem.count);
                 array.push(arr);
             })
-            console.log(array);
             if(document){
               
                res.status(200).json({
